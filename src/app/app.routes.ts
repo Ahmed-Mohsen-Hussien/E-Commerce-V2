@@ -92,13 +92,13 @@ export const routes: Routes = [
         title: 'Wishlist',
       },
       {
-        path: 'details/:slug/:id',
+        path: 'details/:id',
         loadComponent: () =>
           import('./features/details/details.component').then((c) => c.DetailsComponent),
         title: 'Details',
       },
       {
-        path: 'review/:slug/:id',
+        path: 'review/:id',
         loadComponent: () =>
           import('./features/review/review.component').then((c) => c.ReviewComponent),
         title: 'Review',
