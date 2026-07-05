@@ -1,0 +1,18 @@
+<section class="py-16 max-w-8xl mx-auto px-5">
+  <h2 class="text-3xl text-green-600 font-bold mb-6 text-center">Shop ALL Categories</h2>
+  <div class="row grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+    @for (item of categoriesList(); track item._id) {
+      <div>
+        <img
+          (click)="setCategoryId(item._id)"
+          routerLink="/products"
+          class="w-70 h-60 sm:w-52 sm:h-52 md:w-full md:h-70 rounded-2xl shadow cursor-pointer"
+          [src]="item.image"
+          [alt]="item.name"
+          [title]="item.name"
+        />
+        <h3 class="text-green-600 py-2 font-semibold text-lg text-center">{{ item.name }}</h3>
+      </div>
+    }
+  </div>
+</section>

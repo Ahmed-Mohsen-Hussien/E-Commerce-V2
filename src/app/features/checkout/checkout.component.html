@@ -1,0 +1,86 @@
+<section class="my-16 max-w-4xl mx-auto px-5 lg:px-0">
+  <div class="bg-white p-4 rounded-lg shadow">
+    <div>
+      <h2 class="mb-5 mt-3 font-bold text-3xl">Check Out Details</h2>
+    </div>
+    <form [formGroup]="checkOutForm" (ngSubmit)="onSubmitCheckOutForm($event)">
+      <div formGroupName="shippingAddress">
+        @let detailsControl = checkOutForm.get('shippingAddress.details');
+        <div class="mb-3">
+          <label for="details" class="main-label ms-1">Shipping Details</label>
+          <textarea
+            formControlName="details"
+            name="details"
+            id="details"
+            rows="4"
+            placeholder="Enter your address details"
+            class="main-input"
+          ></textarea>
+          @if (detailsControl?.errors && detailsControl?.touched) {
+            <ul class="mt-2 space-y-1 text-red-600 text-sm">
+              @if (detailsControl?.getError('required')) {
+                <li>Details is required</li>
+              }
+            </ul>
+          }
+        </div>
+        @let phoneControl = checkOutForm.get('shippingAddress.phone');
+        <div class="mb-3">
+          <label for="phone" class="main-label ms-1">Phone Number</label>
+          <input
+            formControlName="phone"
+            type="tel"
+            id="phone"
+            class="main-input"
+            placeholder="Enter your phone number"
+          />
+          @if (phoneControl?.errors && phoneControl?.touched) {
+            <ul class="mt-2 space-y-1 text-red-600 text-sm">
+              @if (phoneControl?.getError('required')) {
+                <li>Phone number is required</li>
+              } @else if (phoneControl?.getError('pattern')) {
+                <li>Please enter an egyptian phone number</li>
+              }
+            </ul>
+          }
+        </div>
+        @let cityControl = checkOutForm.get('shippingAddress.city');
+        <div class="mb-3">
+          <label for="city" class="main-label ms-1">City</label>
+          <input
+            formControlName="city"
+            type="text"
+            id="city"
+            class="main-input"
+            placeholder="Enter your city"
+          />
+          @if (cityControl?.errors && cityControl?.touched) {
+            <ul class="mt-2 space-y-1 text-red-600 text-sm">
+              @if (cityControl?.getError('required')) {
+                <li>City is required</li>
+              }
+            </ul>
+          }
+        </div>
+        <div class="flex flex-col md:flex-row gap-2">
+          <button id="visa" type="submit" class="btn-main px-3 py-2.5 rounded-base w-full">
+            Pay With Visa
+            @if (isLoading() && buttonId === 'visa') {
+              <span>
+                <i class="fa-solid fa-spinner animate-spin"></i>
+              </span>
+            }
+          </button>
+          <button id="cash" type="submit" class="btn-main px-3 py-2.5 rounded-base w-full">
+            Cash On Delivery
+            @if (isLoading() && buttonId === 'cash') {
+              <span>
+                <i class="fa-solid fa-spinner animate-spin"></i>
+              </span>
+            }
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

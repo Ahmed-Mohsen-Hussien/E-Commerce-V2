@@ -1,0 +1,90 @@
+<section>
+  <div class="mb-5">
+    <h2 class="font-bold text-2xl">Log in to Fresh Cart</h2>
+    <p class="text-gray-600 mt-2 text-md">Log in and continue your shopping.</p>
+  </div>
+  <form [formGroup]="loginForm" (ngSubmit)="submitLoginForm()">
+    @let emailControl = loginForm.get('email');
+    <div class="relative mb-3">
+      <i class="absolute fa-regular fa-envelope translate-y-5 translate-x-3 text-gray-400"></i>
+      <input
+        formControlName="email"
+        type="email"
+        id="email"
+        class="main-input text-base font-bold placeholder:font-normal placeholder:text-sm ps-10"
+        placeholder="Enter your email address"
+      />
+      @if (emailControl?.errors && emailControl?.touched) {
+        <ul class="mt-2 space-y-1 text-red-600 text-sm">
+          @if (emailControl?.getError('required')) {
+            <li>Email address is required</li>
+          } @else if (emailControl?.getError('email')) {
+            <li>Please enter a valid email address</li>
+          }
+        </ul>
+      }
+    </div>
+    @let passwordControl = loginForm.get('password');
+    <div class="mb-3 relative">
+      <i class="fa-solid fa-key absolute text-gray-400 translate-y-5 translate-x-3"></i>
+      <input
+        formControlName="password"
+        [type]="showPass ? 'text' : 'password'"
+        id="password"
+        class="main-input text-base font-bold placeholder:font-normal placeholder:text-sm ps-10"
+        placeholder="Enter your password"
+      />
+      <span class="absolute -mt-9 right-3 cursor-pointer text-gray-400">
+        <i
+          (click)="togglePassword()"
+          [class]="showPass ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+        ></i>
+      </span>
+
+      @if (passwordControl?.errors && passwordControl?.touched) {
+        <ul class="mt-2 space-y-1 text-red-600 text-sm">
+          @if (passwordControl?.getError('required')) {
+            <li>Password is required</li>
+          } @else if (passwordControl?.getError('pattern')) {
+            <span class="font-medium">Password must meet these requirements :</span>
+            <li class="mt-2">
+              Minimum eight characters, at least one upper case English letter, one lower case
+              English letter, one number and one special character
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    <button
+      type="submit"
+      class="btn-main py-3 w-full text-md rounded-base flex gap-x-2 justify-center"
+    >
+      Login
+      @if (isLoading()) {
+        <span>
+          <i class="fa-solid fa-spinner animate-spin"></i>
+        </span>
+      }
+    </button>
+  </form>
+  <div class="flex flex-col mt-5 gap-y-2">
+    <div>
+      <button
+        (click)="forgetPassword()"
+        class="text-green-600 cursor-pointer font-semibold hover:text-green-700 transition duration-150"
+      >
+        Forgot Your Password ?
+      </button>
+    </div>
+    <div class="flex gap-x-2 text-sem-bold">
+      You don't have an account ?
+      <button
+        routerLink="/register"
+        class="text-green-600 cursor-pointer font-semibold hover:text-green-700 transition duration-150"
+      >
+        Sign Up
+      </button>
+    </div>
+  </div>
+</section>

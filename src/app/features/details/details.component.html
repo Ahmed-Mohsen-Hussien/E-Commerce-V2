@@ -1,0 +1,96 @@
+<section class="py-16 max-w-8xl px-5 mx-auto">
+  <div class="flex flex-col space-y-5 md:flex-row gap-x-6">
+    <div class="border border-gray-200 rounded-lg bg-white p-4 shadow w-90 md:w-80 mx-auto md:mx-0">
+      <div class="flex justify-end">
+        @if (isWishListed()) {
+          <button
+            (click)="removeProductFromWishlist(productData()._id)"
+            class="text-red-600 text-2xl cursor-pointer"
+          >
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        } @else {
+          <button
+            (click)="addProductToWishlist(productData()._id)"
+            class="text-red-600 text-2xl cursor-pointer"
+          >
+            <i class="fa-regular fa-heart"></i>
+          </button>
+        }
+      </div>
+      <owl-carousel-o [options]="productDetailsOptions">
+        @for (image of productData().images; track $index) {
+          <ng-template carouselSlide>
+            <img class="h-80 md:h-72 w-full object-cover" [src]="image" />
+          </ng-template>
+        }
+      </owl-carousel-o>
+    </div>
+    <div class="flex flex-col gap-y-1">
+      <span
+        routerLink="/products"
+        (click)="setBrandId(productData().brand._id)"
+        class="text-green-600 font-semibold cursor-pointer"
+        >{{ productData().brand.name }}</span
+      >
+      <h2 class="text-2xl font-semibold">{{ productData().title }}</h2>
+      <p class="text-lg text-gray-500">{{ productData().description }}</p>
+      <div class="flex gap-x-2">
+        <span> {{ productData().ratingsAverage }} <i class="fas fa-star text-yellow-500"></i></span>
+        <span class="text-green-600 text-base font-bold"
+          >{{ productData().ratingsQuantity }} Ratings</span
+        >
+      </div>
+      <span class="text-xl font-bold mt-3">{{ productData().price }} EGP</span>
+      @if (isInCart()) {
+        <button
+          (click)="removeProductFromCart(productData()._id)"
+          class="btn-main w-full rounded-base py-3 mt-2"
+        >
+          Remove From Cart
+        </button>
+      } @else {
+        <button
+          (click)="addProductItemToCart(productData()._id)"
+          class="btn-main w-full rounded-base py-3 mt-2"
+        >
+          Add To Cart
+        </button>
+      }
+    </div>
+  </div>
+  <h3 class="text-2xl font-bold text-green-600 my-8">Product Ratings & Reviews</h3>
+  <div class="grid grid-cols-12 gap-5">
+    <div class="flex flex-col gap-y-2 md:col-span-4 col-span-12">
+      <div class="text-xl font-bold">- How do I review this product?</div>
+      <div class="font-semibold">
+        If you recently purchased this product from FreshCart, you can go to your Orders page and
+        click on the Submit Review button
+      </div>
+    </div>
+    <div class="space-y-5 md:col-span-8 col-span-12">
+      @for (review of productReviews(); track review._id) {
+        <div class="flex gap-x-4">
+          <div
+            class="bg-green-500 font-bold text-white px-4 py-2 rounded-full h-fit size-11 flex justify-center items-center text-xl"
+          >
+            {{ review.user.name[0].toUpperCase() }}
+          </div>
+          <div class="bg-white shadow rounded-lg px-4 py-3 space-y-1 min-w-0">
+            <div class="flex justify-between gap-x-3 items-center">
+              <h2 class="text-base font-bold">{{ review.user.name }}</h2>
+              <span class="text-sm text-gray-500">{{
+                review.createdAt | date: 'MMM d, h:mm a'
+              }}</span>
+            </div>
+            <div class="flex gap-x-2">
+              <span>{{ review.rating }}</span>
+              <span><i class="fas fa-star text-yellow-500"></i></span>
+            </div>
+            <p class="text-base font-semibold wrap-break-word">{{ review.review }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

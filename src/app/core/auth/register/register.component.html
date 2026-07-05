@@ -1,0 +1,145 @@
+<section>
+  <div class="mb-5">
+    <h2 class="font-bold text-2xl">Create a new account</h2>
+    <p class="text-gray-600 mt-2 text-md">Enter the shopping world.</p>
+  </div>
+  <form [formGroup]="registerForm" (ngSubmit)="submitRegisterForm()">
+    @let nameControl = registerForm.get('name');
+    <div class="mb-3 relative">
+      <i class="absolute fa-regular fa-user translate-y-4.5 translate-x-3 text-gray-400"></i>
+      <input
+        formControlName="name"
+        type="text"
+        id="name"
+        class="main-input text-base font-bold placeholder:font-normal placeholder:text-sm ps-10"
+        placeholder="Enter your name"
+      />
+      @if (nameControl?.errors && nameControl?.touched) {
+        <ul class="mt-2 space-y-1 text-red-600 text-sm">
+          @if (nameControl?.getError('required')) {
+            <li>Name is required</li>
+          } @else if (nameControl?.getError('minlength')) {
+            <li>Name must be at least 3 characters</li>
+          } @else if (nameControl?.getError('maxlength')) {
+            <li>Name must be at most 20 characters</li>
+          }
+        </ul>
+      }
+    </div>
+    @let emailControl = registerForm.get('email');
+    <div class="mb-3 relative">
+      <i class="absolute fa-regular fa-envelope translate-y-5 translate-x-3 text-gray-400"></i>
+      <input
+        formControlName="email"
+        type="email"
+        id="email"
+        class="main-input text-base font-bold placeholder:font-normal placeholder:text-sm ps-10"
+        placeholder="Enter your email address"
+      />
+      @if (emailControl?.errors && emailControl?.touched) {
+        <ul class="mt-2 space-y-1 text-red-600 text-sm">
+          @if (emailControl?.getError('required')) {
+            <li>Email address is required</li>
+          } @else if (emailControl?.getError('email')) {
+            <li>Please enter a valid email address</li>
+          }
+        </ul>
+      }
+    </div>
+    @let phoneControl = registerForm.get('phone');
+    <div class="mb-3 relative">
+      <i class="fa-solid fa-phone absolute text-gray-400 translate-y-4.5 translate-x-3"></i>
+      <input
+        formControlName="phone"
+        type="tel"
+        id="phone"
+        class="main-input text-base font-bold placeholder:font-normal placeholder:text-sm ps-10"
+        placeholder="Enter your phone number"
+      />
+      @if (phoneControl?.errors && phoneControl?.touched) {
+        <ul class="mt-2 space-y-1 text-red-600 text-sm">
+          @if (phoneControl?.getError('required')) {
+            <li>Phone number is required</li>
+          } @else if (phoneControl?.getError('pattern')) {
+            <li>Please enter a valid phone number</li>
+          }
+        </ul>
+      }
+    </div>
+    @let passwordControl = registerForm.get('password');
+    <div class="mb-3 relative">
+      <i class="fa-solid fa-key absolute text-gray-400 translate-y-5 translate-x-3"></i>
+      <input
+        formControlName="password"
+        [type]="showPass ? 'text' : 'password'"
+        id="password"
+        class="main-input text-base font-bold placeholder:font-normal placeholder:text-sm ps-10"
+        placeholder="Enter your password"
+      />
+      <span class="absolute right-3 -mt-9 cursor-pointer text-gray-400">
+        <i
+          (click)="togglePassword()"
+          [class]="showPass ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+        ></i>
+      </span>
+
+      @if (passwordControl?.errors && passwordControl?.touched) {
+        <ul class="mt-2 space-y-1 text-red-600 text-sm">
+          @if (passwordControl?.getError('required')) {
+            <li>Password is required</li>
+          } @else if (passwordControl?.getError('pattern')) {
+            <span class="font-medium">Password must meet these requirements :</span>
+            <li class="mt-2">
+              Minimum eight characters, at least one upper case English letter, one lower case
+              English letter, one number and one special character
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    @let rePasswordControl = registerForm.get('rePassword');
+    <div class="mb-3">
+      <input
+        formControlName="rePassword"
+        type="password"
+        id="repassword"
+        class="main-input text-base font-bold placeholder:font-normal placeholder:text-sm"
+        placeholder="Rewrite your password"
+      />
+      @if (
+        (rePasswordControl?.errors || registerForm.getError('mismatch')) &&
+        rePasswordControl?.touched
+      ) {
+        <ul class="mt-2 space-y-1 text-red-600 text-sm">
+          @if (rePasswordControl?.getError('required')) {
+            <li>Password confirmation is required</li>
+          } @else if (registerForm.getError('mismatch')) {
+            <li>Confirm password doesn't match the password</li>
+          }
+        </ul>
+      }
+    </div>
+
+    <button
+      type="submit"
+      class="btn-main py-3 w-full text-md rounded-base flex gap-x-2 justify-center"
+    >
+      Register
+      @if (isLoading()) {
+        <span>
+          <i class="fa-solid fa-spinner animate-spin"></i>
+        </span>
+      }
+    </button>
+  </form>
+  <div class="flex gap-x-2 text-sem-bold mt-4">
+    You have an account ?
+    <button
+      routerLink="/login"
+      class="text-green-600 cursor-pointer font-semibold hover:text-green-700 transition duration-150"
+    >
+      Sign In
+    </button>
+  </div>
+</section>

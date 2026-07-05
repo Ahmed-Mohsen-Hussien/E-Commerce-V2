@@ -1,0 +1,175 @@
+<section class="py-16 max-w-8xl mx-auto px-4 xl:px-0">
+  @if (isLoading()) {
+    @for (item of [1, 2, 3]; track $index) {
+      <div class="px-4 py-2 mb-10 animate-pulse">
+        <div class="flex flex-col md:flex-row gap-4 mb-6">
+          <div class="bg-white rounded-lg p-5 w-full shadow-sm border border-gray-200">
+            <div class="h-6 w-44 bg-gray-200 rounded mb-5"></div>
+
+            @for (line of [1, 2, 3]; track $index) {
+              <div class="flex justify-between items-center mb-4">
+                <div class="h-4 w-24 bg-gray-200 rounded"></div>
+                <div class="h-4 w-36 bg-gray-200 rounded"></div>
+              </div>
+            }
+          </div>
+
+          <div class="bg-white rounded-lg p-5 w-full shadow-sm border border-gray-200">
+            @for (line of [1, 2, 3, 4]; track $index) {
+              <div class="flex justify-between items-center mb-4">
+                <div class="h-4 w-28 bg-gray-200 rounded"></div>
+                <div class="h-4 w-24 bg-gray-200 rounded"></div>
+              </div>
+            }
+
+            <div class="flex justify-between items-center pt-4 mt-4 border-t border-gray-200">
+              <div class="h-5 w-28 bg-gray-300 rounded"></div>
+              <div class="h-6 w-24 bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
+
+        @for (product of [1, 2]; track $index) {
+          <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200 my-4">
+            <div class="flex flex-col md:flex-row gap-4">
+              <div
+                class="w-60 h-56 sm:w-52 sm:h-48 md:w-36 md:h-32 bg-gray-200 rounded-lg shrink-0"
+              ></div>
+
+              <div class="flex flex-col md:flex-row justify-between w-full gap-4">
+                <div class="flex flex-col gap-3 w-full">
+                  <div class="h-4 w-20 bg-gray-200 rounded"></div>
+                  <div class="h-6 w-3/4 bg-gray-200 rounded"></div>
+                  <div class="h-4 w-24 bg-gray-200 rounded"></div>
+                  <div class="h-4 w-20 bg-gray-200 rounded"></div>
+                  <div class="h-5 w-28 bg-gray-300 rounded"></div>
+                </div>
+
+                <div class="h-11 w-full md:w-40 bg-gray-200 rounded-xl self-end"></div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  } @else {
+    @for (item of ordersList(); track item._id) {
+      <div class="px-4 py-2 mb-10 rounded-lg">
+        <div class="flex flex-col md:flex-row justify-between gap-4 mb-6">
+          <div
+            class="bg-white rounded-lg p-5 flex flex-col gap-y-2 w-full shadow-sm border border-gray-200"
+          >
+            <h5
+              class="text-lg font-bold text-gray-900 flex items-center gap-2 border-b border-b-gray-200 mb-3 pb-3"
+            >
+              <i class="fas fa-location-dot"></i>
+              Delivery address
+            </h5>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-500 font-medium">Address</span>
+              <span class="font-semibold text-gray-900">
+                {{ item.shippingAddress.city }},
+                {{ item.shippingAddress.details }}
+              </span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-500 font-medium">Name</span>
+              <span class="font-semibold text-gray-900 capitalize">
+                {{ item.user.name }}
+              </span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-500 font-medium">Phone</span>
+              <span class="font-semibold text-gray-900 capitalize">
+                {{ item.shippingAddress.phone }}
+              </span>
+            </div>
+          </div>
+          <div
+            class="bg-white rounded-lg p-5 flex flex-col gap-y-2 w-full shadow-sm border border-gray-200"
+          >
+            <div class="flex justify-between items-center">
+              <span class="text-gray-500 font-medium">Order date</span>
+              <span class="font-semibold text-gray-900">{{
+                item.createdAt | date: 'MMM d, h:mm a'
+              }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-500 font-medium">Shipping price</span>
+              <span class="font-semibold text-gray-900">{{ item.shippingPrice }} EGP</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-500 font-medium">Tax price</span>
+              <span class="font-semibold text-gray-900">{{ item.taxPrice }} EGP</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-500 font-medium">Payment method</span>
+              <span class="font-semibold text-gray-900 capitalize">{{
+                item.paymentMethodType
+              }}</span>
+            </div>
+            <div class="flex justify-between items-center pt-2 mt-1 border-t border-gray-200">
+              <span class="text-gray-700 font-bold">Total Price</span>
+              <span class="font-bold text-lg">{{ item.totalOrderPrice }} EGP</span>
+            </div>
+          </div>
+        </div>
+        @for (orderProduct of item.cartItems; track orderProduct._id) {
+          <div
+            class="bg-white rounded-lg p-4 shadow-sm border border-gray-200 my-4 hover:shadow-md transition duration-200"
+          >
+            <div class="flex flex-col md:flex-row gap-4 items-center">
+              <div>
+                <img
+                  [routerLink]="[
+                    '/details',
+                    orderProduct.product.title.toLocaleLowerCase().replaceAll(' ', '-'),
+                    orderProduct.product._id,
+                  ]"
+                  class="w-60 h-56 sm:w-52 sm:h-48 md:w-36 md:h-32 object-cover cursor-pointer"
+                  [src]="orderProduct.product.imageCover"
+                  [alt]="orderProduct.product.title"
+                />
+              </div>
+              <div class="flex flex-col md:flex-row md:items-end justify-between w-full gap-x-2">
+                <div class="flex flex-col gap-y-1">
+                  <span class="text-green-600 font-semibold">{{
+                    orderProduct.product.brand.name
+                  }}</span>
+                  <h2 class="text-lg font-semibold">
+                    {{ orderProduct.product.title }}
+                  </h2>
+                  <span>
+                    {{ orderProduct.product.ratingsAverage }}
+                    <span><i class="fas fa-star text-yellow-500"></i></span>
+                  </span>
+                  <span class="text-sm font-semibold">Count : {{ orderProduct.count }}</span>
+
+                  <span class="text-lg font-bold"
+                    >{{ orderProduct.count * orderProduct.price }} EGP</span
+                  >
+                </div>
+                <button
+                  [routerLink]="[
+                    '/review',
+                    orderProduct.product.title.toLocaleLowerCase().replaceAll(' ', '-'),
+                    orderProduct.product._id,
+                  ]"
+                  class="btn-main px-4 py-2.5 md:text-sm rounded-base md:rounded-xl my-2 w-full md:w-fit shrink-0"
+                >
+                  Review product
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    } @empty {
+      <div class="flex flex-col justify-center items-center">
+        <div>
+          <h2 class="text-2xl">No orders yet</h2>
+        </div>
+      </div>
+    }
+  }
+</section>

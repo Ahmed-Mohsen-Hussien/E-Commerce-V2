@@ -1,0 +1,180 @@
+<section class="py-16 max-w-8xl px-5 mx-auto">
+  @if (isLoading()) {
+    <div class="flex flex-col items-center md:flex-row gap-6 animate-pulse">
+      <div class="border border-gray-200 rounded-lg bg-white py-4 px-2 shadow w-80 md:w-100">
+        <div class="h-80 md:h-72 w-full bg-gray-200 rounded-lg"></div>
+      </div>
+      <div class="flex flex-col gap-y-3 w-full">
+        <div class="h-5 w-24 bg-gray-200 rounded"></div>
+        <div class="h-8 w-3/4 bg-gray-300 rounded"></div>
+        <div class="bg-white rounded-lg p-4 shadow mt-5">
+          <div class="h-7 w-40 bg-gray-300 rounded mb-3"></div>
+          <div class="h-4 w-56 bg-gray-200 rounded mb-6"></div>
+          <div class="h-5 w-28 bg-gray-200 rounded mb-3"></div>
+          <div class="w-full h-32 bg-gray-200 rounded-lg mb-4"></div>
+          <div class="h-11 w-full bg-gray-300 rounded-base"></div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="flex flex-col items-center space-y-5 md:flex-row gap-x-6">
+      <div class="border border-gray-200 rounded-lg bg-white py-4 px-2 shadow w-80 md:w-100 h-fit">
+        <img
+          [routerLink]="['/details', productData().slug, productData().id]"
+          class="h-80 md:h-72 object-cover w-full cursor-pointer"
+          [src]="productData().imageCover"
+        />
+      </div>
+      <div class="flex flex-col gap-y-1 w-full">
+        <span class="text-green-600 font-semibold">{{ productData().brand.name }}</span>
+        <h2 class="text-2xl font-semibold">{{ productData().title }}</h2>
+        <div class="bg-white rounded-lg p-4 shadow mt-5 min-w-0">
+          @if (productReview()._id && !isEditing) {
+            <div class="flex flex-col sm:flex-row sm:justify-between gap-x-5 sm:items-center">
+              <div class="flex flex-col gap-y-1">
+                <h2 class="text-xl font-bold">Your feedback</h2>
+                <div class="flex gap-x-2">
+                  <span class="text-gray-500 font-semibold">Product Rating</span>
+                  <div class="flex gap-x-1 items-center">
+                    <span class="text-gray-500 font-bold">{{ productReview().rating }}</span>
+                    <span><i class="fa-solid fa-star text-yellow-500"></i></span>
+                  </div>
+                </div>
+                <p class="text-gray-500 font-semibold break-all">
+                  {{ productReview().review }}
+                </p>
+              </div>
+              <div class="flex flex-col gap-y-2 mt-2 shrink-0">
+                <button (click)="openEditing()" class="btn-main py-2.5 sm:py-2 rounded-base">
+                  Edit Review
+                </button>
+                <button
+                  (click)="openDeleteModal()"
+                  class="btn-main py-2.5 sm:py-2 rounded-base bg-red-600 hover:bg-red-700 transition duration-300"
+                >
+                  Delete Review
+                </button>
+              </div>
+            </div>
+          } @else {
+            <div>
+              <h2 class="text-xl font-bold">Product review</h2>
+              <p class="text-gray-500 font-semibold">Help others know what to buy!</p>
+            </div>
+            <form [formGroup]="reviewForm" (ngSubmit)="onSubmitReviewForm()">
+              <div class="flex flex-col md:flex-row gap-x-3 md:items-center mt-5">
+                <div class="text-lg font-semibold">How do you rate this product?</div>
+                <div class="flex gap-x-2 my-2">
+                  @for (star of [1, 2, 3, 4, 5]; track star) {
+                    <div
+                      class="cursor-pointer text-2xl transition-colors duration-200"
+                      (click)="setStars(star)"
+                      (mouseenter)="hoverOnStars(star)"
+                      (mouseleave)="leaveStars()"
+                      [class]="{
+                        'text-yellow-400': colorStars(star),
+                        'text-gray-400': !colorStars(star),
+                      }"
+                    >
+                      <i class="fa-solid fa-star"></i>
+                    </div>
+                  }
+                </div>
+              </div>
+              <div class="mt-2">
+                <label class="text-base font-semibold">Add a review</label>
+                <textarea
+                  class="w-full rounded-lg bg-gray-100/50 border border-gray-200 focus:border-green-500 focus:ring-green-500 mt-2 placeholder:text-gray-400"
+                  rows="4"
+                  formControlName="review"
+                  placeholder="What should others know before buying?"
+                ></textarea>
+                <div class="flex gap-x-2 mt-2">
+                  <button type="submit" class="btn-main py-2.5 w-full rounded-base">
+                    Submit Review
+                  </button>
+                  @if (isEditing) {
+                    <button
+                      type="button"
+                      class="bg-gray-200 px-5 font-bold py-2.5 rounded-base cursor-pointer"
+                      (click)="closeEditing()"
+                    >
+                      Cancel
+                    </button>
+                  }
+                </div>
+              </div>
+            </form>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</section>
+@if (isDeleteModalOpen) {
+  <div
+    class="fixed inset-0 z-99 flex justify-center items-center w-full h-full bg-slate-900/65 p-4"
+    (click)="closeDeleteModal()"
+  >
+    <div class="relative w-full max-w-xl max-h-full" (click)="$event.stopPropagation()">
+      <div
+        class="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:px-6 py-3"
+      >
+        <div class="flex items-center justify-between border-b border-default pb-4 md:pb-3">
+          <h3 class="text-lg font-extrabold">Confirm action</h3>
+          <button
+            type="button"
+            (click)="closeDeleteModal()"
+            class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-full text-sm w-9 h-9 ms-auto inline-flex justify-center items-center cursor-pointer"
+          >
+            <svg
+              class="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18 17.94 6M18 18 6.06 6"
+              />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+
+        <div class="flex gap-x-2 py-4">
+          <div class="bg-red-100 h-fit px-2 py-2.5 rounded-full flex items-center">
+            <i class="fa-solid fa-triangle-exclamation text-lg text-red-500"></i>
+          </div>
+          <div>
+            <h5 class="font-bold">Delete this review?</h5>
+            <p class="text-gray-500">This review will be permanently removed.</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end border-t border-default space-x-2 pt-4 md:pt-4">
+          <button
+            (click)="closeDeleteModal()"
+            type="button"
+            class="bg-white border border-gray-300 rounded-base px-3 py-2.5 text-sm text-black font-bold hover:bg-gray-200 transition duration-150 cursor-pointer"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            (click)="deleteMyReview(); closeDeleteModal()"
+            class="px-3 py-2.5 text-sm rounded-base font-bold bg-red-600 text-white cursor-pointer disabled:bg-blue-300 disabled:cursor-not-allowed hover:bg-red-700 transition duration-150"
+          >
+            Delete Review
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

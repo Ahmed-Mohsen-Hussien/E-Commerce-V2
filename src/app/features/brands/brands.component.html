@@ -1,0 +1,20 @@
+<section class="py-16 max-w-8xl mx-auto px-5">
+  <h2 class="text-3xl text-green-600 font-bold mb-6 text-center">Shop ALL Brands</h2>
+  <div class="row grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+    @for (item of brandList(); track item._id) {
+      <img
+        (click)="setBrandId(item._id)"
+        routerLink="/products"
+        class="w-full rounded-2xl shadow cursor-pointer"
+        [src]="item.image"
+        [alt]="item.name"
+        [title]="item.name"
+      />
+    }
+  </div>
+  @if (hasMore()) {
+    <div class="flex justify-center items-center mt-8 max-w-4xl mx-auto">
+      <button (click)="viewMore()" class="btn-main px-4 py-3 rounded-base w-full">View More</button>
+    </div>
+  }
+</section>

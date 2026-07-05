@@ -1,0 +1,113 @@
+<div class="max-w-8xl mx-auto px-4 xl:px-0 py-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:block">
+  @for (item of wishlistProducts(); track item._id) {
+    <div
+      class="flex flex-col md:flex-row md:justify-between items-center bg-white rounded-lg shadow md:my-5 p-4 gap-x-5"
+    >
+      <div>
+        <img
+          [routerLink]="['/details', item.slug, item._id]"
+          class="w-60 h-56 sm:w-52 sm:h-48 md:w-36 md:h-32 object-cover cursor-pointer"
+          [src]="item.imageCover"
+          alt=""
+        />
+      </div>
+      <div
+        class="flex flex-col justify-end md:flex-row md:justify-between md:items-center w-full h-full"
+      >
+        <div class="flex flex-col gap-y-1 w-full">
+          <h3 class="text-green-600">{{ item.category.name }}</h3>
+          <h2 class="text-lg font-semibold truncate w-full md:whitespace-normal">
+            {{ item.title }}
+          </h2>
+          <span><i class="fas fa-star text-yellow-500"></i> {{ item.ratingsAverage }} </span>
+          <div class="md:hidden flex flex-col gap-y-2 justify-center">
+            <div class="flex flex-wrap gap-x-3 items-center">
+              @if (item.priceAfterDiscount) {
+                <div class="flex items-center gap-x-2">
+                  <span class="text-lg font-bold">{{ item.priceAfterDiscount }} EGP</span>
+                  <span class="text-sm text-gray-400 line-through">{{ item.price }} EGP</span>
+                  <span
+                    class="bg-green-600/80 rounded-md px-2 py-1 text-white text-sm font-semibold"
+                  >
+                    -
+                    {{
+                      ((item.price - item.priceAfterDiscount) / item.price) * 100 | number: '1.0-0'
+                    }}
+                    %
+                  </span>
+                </div>
+              } @else {
+                <span class="text-lg font-bold">{{ item.price }} EGP</span>
+              }
+            </div>
+            <div class="flex flex-wrap gap-x-2 items-center">
+              <span class="font-semibold">Added on {{ item.updatedAt | date: 'shortDate' }}</span>
+              <button
+                class="rm-btn text-xs font-bold px-2 py-1 rounded-md"
+                (click)="removeProductFromWishlist(item._id)"
+              >
+                Remove
+              </button>
+            </div>
+            @if (isInCart(item._id)) {
+              <button
+                class="btn-main text-base font-bold rounded-base px-3 w-full py-2 mt-2 flex gap-x-2 items-center justify-center hover:bg-green-600 cursor-default"
+              >
+                In Cart
+                <i class="fa-solid fa-check text-white"></i>
+              </button>
+            } @else {
+              <button
+                class="btn-main text-base font-bold rounded-base px-3 w-full mt-2 py-2"
+                (click)="addProductItemToCart(item._id)"
+              >
+                Add To Cart
+              </button>
+            }
+          </div>
+        </div>
+        <div class="hidden md:flex flex-col justify-center md:items-end w-full mt-4 md:mt-0">
+          <div class="flex flex-wrap gap-x-2 items-center">
+            <span class="font-semibold">Added on {{ item.updatedAt | date: 'shortDate' }}</span>
+            <button
+              class="rm-btn text-xs font-bold px-2 py-1 rounded-md"
+              (click)="removeProductFromWishlist(item._id)"
+            >
+              Remove
+            </button>
+          </div>
+          <div class="flex flex-wrap gap-x-3 items-center py-2">
+            @if (item.priceAfterDiscount) {
+              <span class="bg-green-600/80 rounded-md px-2 py-1 text-white text-xl font-semibold">
+                -
+                {{ ((item.price - item.priceAfterDiscount) / item.price) * 100 | number: '1.0-0' }}
+                %
+              </span>
+              <div class="flex flex-col justify-center items-start">
+                <span class="text-sm text-gray-400 line-through">{{ item.price }} EGP</span>
+                <span class="text-lg font-bold">{{ item.priceAfterDiscount }} EGP</span>
+              </div>
+            } @else {
+              <span class="text-lg font-bold">{{ item.price }} EGP</span>
+            }
+            @if (isInCart(item._id)) {
+              <button
+                class="btn-main text-base font-bold rounded-base px-3 py-2 mt-2 flex gap-x-2 items-center justify-center hover:bg-green-600 cursor-default"
+              >
+                In Cart
+                <i class="fa-solid fa-check text-white"></i>
+              </button>
+            } @else {
+              <button
+                class="btn-main text-base font-bold rounded-base px-3 py-2 mt-2"
+                (click)="addProductItemToCart(item._id)"
+              >
+                Add To Cart
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

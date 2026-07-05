@@ -1,0 +1,37 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'tailwindcss';
+@import 'flowbite/src/themes/default';
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+body {
+  font-family: 'Cairo', sans-serif;
+  background-color: #f3f4f6;
+  min-height: min-content;
+}
+@utility container {
+  margin: 0 auto;
+}
+@layer components {
+  .btn-main {
+    @apply bg-green-600 border px-2.5 py-1.5 rounded-md border-gray-300  text-white cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-300 disabled:hover:bg-gray-300 hover:bg-green-700 transition-[background-color] duration-300 font-bold;
+  }
+  .slider-open {
+    @apply translate-x-[120%] transition-transform duration-2000;
+  }
+  .slider-close {
+    @apply translate-x-[120%] transition-transform duration-2000;
+  }
+  .card {
+    @apply shadow rounded border border-gray-200 p-2;
+  }
+  .main-input {
+    @apply bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-green-600/50 focus:border-green-600 block w-full px-3 py-3.25 shadow-xs placeholder:text-gray-400;
+  }
+  .main-label {
+    @apply block mb-1.5 text-sm font-semibold text-heading;
+  }
+  .rm-btn {
+    @apply bg-red-600 py-0.5 text-sm px-1 rounded-xs text-white cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-300 disabled:hover:bg-gray-300 hover:bg-red-700 transition-[background-color] duration-500;
+  }
+}
