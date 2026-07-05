@@ -50,7 +50,11 @@
           <div class="flex gap-x-4 bg-white mb-4 rounded-lg p-3 shadow w-full min-w-0">
             <div class="shrink-0">
               <img
-                [routerLink]="['/details', item.product._id]"
+                [routerLink]="[
+                  '/details',
+                  item.product.title.toLocaleLowerCase().replaceAll(' ', '-'),
+                  item.product._id,
+                ]"
                 class="w-36 h-36 object-cover cursor-pointer"
                 [src]="item.product.imageCover"
                 [alt]="item.product.title"
