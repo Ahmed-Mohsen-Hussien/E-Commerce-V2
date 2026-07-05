@@ -3,16 +3,19 @@ import { CategoriesService } from '../../../core/services/categories/categories.
 import { CategoriesData } from '../../../core/models/categories/categories-data.interface';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { TranslateService } from '@ngx-translate/core';
+import { RouterLink } from '@angular/router';
+import { ProductsService } from '../../../core/services/products/products.service';
 
 @Component({
   selector: 'app-popular-categories',
-  imports: [CarouselModule],
+  imports: [CarouselModule, RouterLink],
   templateUrl: './popular-categories.component.html',
   styleUrl: './popular-categories.component.css',
 })
 export class PopularCategoriesComponent implements OnInit {
   private readonly categoriesService = inject(CategoriesService);
   private readonly translateService = inject(TranslateService);
+  private readonly productsService = inject(ProductsService);
   categoriesList: WritableSignal<CategoriesData[]> = signal<CategoriesData[]>([]);
   ngOnInit(): void {
     this.onLangChange();
@@ -62,4 +65,7 @@ export class PopularCategoriesComponent implements OnInit {
     },
     nav: false,
   };
+  setCategoryId(id: string) {
+    this.productsService.categoryId = id;
+  }
 }

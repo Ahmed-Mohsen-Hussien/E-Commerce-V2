@@ -32,7 +32,7 @@
   >
     @for (item of productList() | paginate: pagination | search: searchWord; track item.id) {
       <app-card [data]="item"></app-card>
-    } @empty {}
+    }
   </div>
   <div class="flex flex-wrap justify-center py-6">
     <pagination-controls

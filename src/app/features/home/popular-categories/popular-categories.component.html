@@ -5,7 +5,9 @@
       <ng-template carouselSlide [id]="item._id">
         <div class="mx-2">
           <img
-            class="w-50 h-40 sm:w-50 sm:h-50 md:w-48 md:h-50 rounded-2xl shadow"
+            (click)="setCategoryId(item._id)"
+            routerLink="/products"
+            class="w-50 h-40 sm:w-50 sm:h-50 md:w-48 md:h-50 rounded-2xl shadow cursor-pointer"
             [src]="item.image"
             [alt]="item.name"
             [title]="item.name"
