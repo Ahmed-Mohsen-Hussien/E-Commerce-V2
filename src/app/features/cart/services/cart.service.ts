@@ -37,7 +37,8 @@ export class CartService {
   }
   checkOutSession(cartId: string | null, shippingDetails: object): Observable<PaymentResponse> {
     return this.httpClient.post<PaymentResponse>(
-      environment.base_url + `orders/checkout-session/${cartId}?url=http://localhost:4200`,
+      environment.base_url +
+        `orders/checkout-session/${cartId}?url=https://e-commerce-v2-ahmed-mohsen.vercel.app`,
       shippingDetails,
     );
   }
