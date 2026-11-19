@@ -1,5 +1,15 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist/talabat/browser",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "version": 2,
+  "name": "freshcartApp2",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api"
+    }
+  ],
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "dist/freshcartApp2/**"
+    }
+  }
 }
